@@ -18,7 +18,7 @@ func ReadFloat64FromFileSwitchd(filename string) (float64, error) {
 	switchdLock.Lock()
 	time.Sleep(10 * time.Millisecond)
 	defer switchdLock.Unlock()
-	fd, err := syscall.Open(filename, syscall.O_RDONLY|syscall.O_NOATIME, 0)
+	fd, err := syscall.Open(filename, syscall.O_RDONLY, 0)
 	if err != nil {
 		return -1, errors.Wrapf(err, "Could not open file %s", filename)
 	}
