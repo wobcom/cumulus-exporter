@@ -4,6 +4,11 @@ set -e
 
 echo "Publishing artifacts"
 
+if [ -z $DEPLOY_TOKEN ]; then
+    echo "DEPLOY_TOKEN not set!"
+    exit 42
+fi
+
 token="$DEPLOY_TOKEN"
 gitlab="https://gitlab.com"
 api="$gitlab/api/v4"
