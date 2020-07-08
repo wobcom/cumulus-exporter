@@ -1,0 +1,52 @@
+image: golang:1.14
+
+stages:
+  - verify
+  - publish
+
+default:
+  before_script:
+    - mkdir -p /go/src/gitlab.com/wobcom /go/src/_/builds
+    - cp -r $CI_PROJECT_DIR /go/src/gitlab.com/wobcom/cumulus-exporter
+    - ln -s /go/src/gitlab.com/wobcom/cumulus-exporter /go/src/_/builds/cumulus-exporter
+    - go get -v -d ./...
+    - go build -o $CI_PROJECT_DIR/cumulus-exporter -i -v gitlab.com/wobcom/cumulus-exporter
+
+fmt:
+  stage: verify
+  tags:
+    - docker
+  script:
+    - test -z $(gofmt -l ./...)
+
+lint:
+  stage: verify
+  tags:
+    - docker
+  script:
+    - go get -u golang.org/x/lint/golint
+    - golint -set_exit_status ./...
+
+vet:
+  stage: verify
+  tags:
+    - docker
+  script:
+    - go vet ./...
+
+test:
+  stage: verify
+  tags:
+    - docker
+  script:
+    - go test ./...
+
+publish:
+  stage: publish
+  tags:
+    - docker
+  only:
+    - tags
+  script:
+    - apt-get install -y jq
+    - ./.ci/publish.sh $CI_COMMIT_REF_NAME
