@@ -50,8 +50,8 @@ build:
   tags:
     - docker
   script:
-    - GOOS=linux  GOARCH=amd64 -o $CI_PROJECT_DIR/cumulus-exporter.linux-amd64  -i -v gitlab.com/wobcom/cumulus-exporter
-    - GOOS=darwin GOARCH=amd64 -o $CI_PROJECT_DIR/cumulus-exporter.darwin-amd64 -i -v gitlab.com/wobcom/cumulus-exporter
+    - GOOS=linux  GOARCH=amd64 go build -o $CI_PROJECT_DIR/cumulus-exporter.linux-amd64  -i -v gitlab.com/wobcom/cumulus-exporter
+    - GOOS=darwin GOARCH=amd64 go build -o $CI_PROJECT_DIR/cumulus-exporter.darwin-amd64 -i -v gitlab.com/wobcom/cumulus-exporter
 
 publish:
   stage: publish
