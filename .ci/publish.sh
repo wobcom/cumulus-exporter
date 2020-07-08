@@ -52,5 +52,5 @@ curl -f \
      --header "PRIVATE-TOKEN: $token" \
      --data "$body" \
      --request POST \
-     "$api/projects/$proj/releases"
+     "$api/projects/$CI_PROJECT_ID/releases"
 
