@@ -43,7 +43,7 @@ JSON
 )
 
 echo "Using the following body..."
-echo "$body" | jq
+echo "$body" 
 
 echo "... creating a release"
 curl -f \
