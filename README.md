@@ -1,5 +1,5 @@
 # Cumulus Exporter
-[![CI Status](https://gitlab.com/wobcom/cumulus-exporter/badges/master/pipeline.svg)][![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![CI Status](https://gitlab.com/wobcom/cumulus-exporter/badges/master/pipeline.svg)](https://gitlab.com/wobcom/cumulus-exporter/pipelines) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 **cumulus-exporter** is a [Prometheus](https://github.com/prometheus/prometheus) exporter, that exposes metrics from switching and routing platforms running on [Cumulus Linux](https://cumulusnetworks.com/products/cumulus-linux/) based hosts alongside the [node_exporter](https://github.com/prometheus/node_exporter).
 
