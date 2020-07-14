@@ -86,10 +86,10 @@ github.com/vishvananda/netlink v1.1.0 h1:1iyaYNBLmP6L0220aDnYQpo1QEV4t4hJ+xEEhhJ
 github.com/vishvananda/netlink v1.1.0/go.mod h1:cTgwzPIzzgDAYoQrMm0EdrjRUBkTqKYppBueQtXaqoE=
 github.com/vishvananda/netns v0.0.0-20191106174202-0a2b9b5464df h1:OviZH7qLw/7ZovXvuNyL3XQl8UFofeikI1NW1Gypu7k=
 github.com/vishvananda/netns v0.0.0-20191106174202-0a2b9b5464df/go.mod h1:JP3t17pCcGlemwknint6hfoeCVQrEMVwxRLRjXpq+BU=
-gitlab.com/wobcom/ethtool v0.0.0-20200708154515-e97cf91fad16 h1:0ozpQIoujsSbj2GyroAfc8B76RlBqorTRr/ZvQZ/WNA=
-gitlab.com/wobcom/ethtool v0.0.0-20200708154515-e97cf91fad16/go.mod h1:LFet1M8k+mCRWeyh2ZBNSKbfKZFSvZ4aJiX8FhowuXc=
-gitlab.com/wobcom/transceiver-exporter v0.0.0-20200708160704-a5a469bfbea5 h1:qljo+EKbmIHIWIS08ZGbRXyXQ8tl7W4nGESTYbs1qMY=
-gitlab.com/wobcom/transceiver-exporter v0.0.0-20200708160704-a5a469bfbea5/go.mod h1:9YNvGlv4VGQdoP/j7+THuhblXACCcqf7obhiYtsEggs=
+gitlab.com/wobcom/ethtool v1.0.0 h1:e8UiPogYgdPrmsXI+RNQ6PbCAiQuWz187p3TGzkngP8=
+gitlab.com/wobcom/ethtool v1.0.0/go.mod h1:LFet1M8k+mCRWeyh2ZBNSKbfKZFSvZ4aJiX8FhowuXc=
+gitlab.com/wobcom/transceiver-exporter v1.0.1 h1:gkafd/i34zsVC8+GEVNCmC4vOqOCkLRN+ga9am/jQI8=
+gitlab.com/wobcom/transceiver-exporter v1.0.1/go.mod h1:tBxq++Cmu+yJQVBsHzZ1YHUIa/0lba6fIahZA6S+Syc=
 golang.org/x/crypto v0.0.0-20180904163835-0709b304e793/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/net v0.0.0-20181114220301-adae6a3d119a/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
