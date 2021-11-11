@@ -11,7 +11,6 @@ default:
     - cp -r $CI_PROJECT_DIR /go/src/gitlab.com/wobcom/cumulus-exporter
     - ln -s /go/src/gitlab.com/wobcom/cumulus-exporter /go/src/_/builds/cumulus-exporter
     - go get -v -d ./...
-    - go build -o $CI_PROJECT_DIR/cumulus-exporter -i -v gitlab.com/wobcom/cumulus-exporter
 
 fmt:
   stage: verify
