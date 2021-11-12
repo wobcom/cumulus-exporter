@@ -50,7 +50,7 @@ body=$(cat <<JSON
         "filepath": "/binaries/cumulus-exporter-amd64"
       },
       { "name": "cumulus-exporter-arm32",
-        "url": "$gitlab$url_amd32",
+        "url": "$gitlab$url_arm32",
         "filepath": "/binaries/cumulus-exporter-arm32"
       }
     ]
