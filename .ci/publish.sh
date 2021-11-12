@@ -14,17 +14,30 @@ gitlab="https://gitlab.com"
 api="$gitlab/api/v4"
 
 
-echo "Uploading the binary to $gitlab"
-out=$(curl -f \
+echo "Uploading the amd64 binary to $gitlab"
+out_amd64=$(curl -f \
 	   --request POST \
            --header "PRIVATE-TOKEN: $token" \
-           --form "file=@$CI_PROJECT_DIR/cumulus-exporter" \
+           --form "file=@$CI_PROJECT_DIR/cumulus-exporter-amd64" \
 	   "$api/projects/$CI_PROJECT_ID/uploads")
 
 
 echo "Response from gitlab is:"
-echo "$out"
-url=$(echo "$out" | jq -r '.full_path')
+echo "$out_amd64"
+
+echo "Uploading the arm32 binary to $gitlab"
+out_arm32=$(curl -f \
+	   --request POST \
+           --header "PRIVATE-TOKEN: $token" \
+           --form "file=@$CI_PROJECT_DIR/cumulus-exporter-arm32" \
+	   "$api/projects/$CI_PROJECT_ID/uploads")
+
+
+echo "Response from gitlab is:"
+echo "$out_arm32"
+
+url_amd64=$(echo "$out_amd64" | jq -r '.full_path')
+url_arm32=$(echo "$out_arm32" | jq -r '.full_path')
 
 body=$(cat <<JSON
 {
