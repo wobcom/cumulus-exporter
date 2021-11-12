@@ -32,9 +32,13 @@ body=$(cat <<JSON
   "name": "$ref",
   "assets": {
     "links": [
-      { "name": "cumulus-exporter",
+      { "name": "cumulus-exporter-amd64",
         "url": "$gitlab$url",
-        "filepath": "/binaries/cumulus-exporter"
+        "filepath": "/binaries/cumulus-exporter-amd64"
+      },
+      { "name": "cumulus-exporter-arm32",
+        "url": "$gitlab$url",
+        "filepath": "/binaries/cumulus-exporter-arm32"
       }
     ]
   }
