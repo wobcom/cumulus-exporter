@@ -50,7 +50,7 @@ build:
     - docker
   script:
     - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o $CI_PROJECT_DIR/cumulus-exporter-amd64 -v gitlab.com/wobcom/cumulus-exporter
-    - GOOS=linux GOARCH=arm32 go build -ldflags="-s -w" -o $CI_PROJECT_DIR/cumulus-exporter-arm32 -v gitlab.com/wobcom/cumulus-exporter
+    - GOOS=linux GOARCH=arm go build -ldflags="-s -w" -o $CI_PROJECT_DIR/cumulus-exporter-arm32 -v gitlab.com/wobcom/cumulus-exporter
 
 publish:
   stage: publish
