@@ -2,7 +2,7 @@ package hwmon
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
-	"gitlab.com/wobcom/cumulus-exporter/util"
+	"github.com/wobcom/cumulus-exporter/util"
 	"sync"
 )
 

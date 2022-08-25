@@ -7,19 +7,19 @@ import (
 	"os"
 	"strings"
 
-	"gitlab.com/wobcom/cumulus-exporter/asic"
-	"gitlab.com/wobcom/cumulus-exporter/collector"
-	"gitlab.com/wobcom/cumulus-exporter/hwmon"
-	"gitlab.com/wobcom/cumulus-exporter/mstpd"
-	"gitlab.com/wobcom/transceiver-exporter/transceiver-collector"
+	"github.com/wobcom/cumulus-exporter/asic"
+	"github.com/wobcom/cumulus-exporter/collector"
+	"github.com/wobcom/cumulus-exporter/hwmon"
+	"github.com/wobcom/cumulus-exporter/mstpd"
+	"github.com/wobcom/transceiver-exporter/transceiver-collector"
 
-	"github.com/prometheus/common/log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-const version string = "1.0"
+const version string = "1.1.0"
 
 var (
 	showVersion              = flag.Bool("version", false, "Print version and exit")
@@ -28,6 +28,7 @@ var (
 	asicCollector            = flag.Bool("collectors.asic", false, "Enable ASIC collector")
 	transceiverCollector     = flag.Bool("collectors.transceiver", false, "Enable transceiver collector (rx / tx power, temperatures, etc.)")
 	collectInterfaceFeatures = flag.Bool("collectors.transceiver.interface-features", false, "Collect interface features (results in many time series")
+	transceiverPowerUnitdBm  = flag.Bool("collectors.transceiver.optical-power-in-dbm", false, "Report optical powers in dBm instead of mW (default false -> mW)")
 	excludeInterfaces        = flag.String("collectors.transceiver.exclude-interfaces", "", "Comma seperated list of interfaces to exclude from scrape")
 	hwmonCollector           = flag.Bool("collectors.hwmon", false, "Enable hwmon collector")
 	hwmonCollectorConfig     = flag.String("collectors.hwmon.config", "hwmon.yml", "hwmon collector config file")
@@ -39,7 +40,7 @@ var (
 func printVersion() {
 	fmt.Println("cumulus-exporter")
 	fmt.Printf("Version: %s\n", version)
-	fmt.Println("Author(s): @fluepke")
+	fmt.Println("Author(s): @fluepke, @vidister")
 	fmt.Println("Exposes varies metrics from devices running the Cumulus Linux operating system")
 }
 
@@ -64,7 +65,7 @@ func initialize() {
 		for index, blacklistedIfaceName := range blacklistedIfaceNames {
 			blacklistedIfaceNames[index] = strings.Trim(blacklistedIfaceName, " ")
 		}
-		enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, *collectInterfaceFeatures))
+		enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, *collectInterfaceFeatures, *transceiverPowerUnitdBm))
 	}
 	if *hwmonCollector {
 		log.Info("hwmon collector enabled")
@@ -103,8 +104,11 @@ func handleMetricsRequest(w http.ResponseWriter, request *http.Request) {
 
 	registry.MustRegister(newCumulusCollector())
 
+	l := log.New()
+	l.Level = log.ErrorLevel
+
 	promhttp.HandlerFor(registry, promhttp.HandlerOpts{
-		ErrorLog:      log.NewErrorLogger(),
+		ErrorLog:      l,
 		ErrorHandling: promhttp.ContinueOnError,
 	}).ServeHTTP(w, request)
 }

@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/log"
-	"gitlab.com/wobcom/cumulus-exporter/collector"
+	log "github.com/sirupsen/logrus"
+	"github.com/wobcom/cumulus-exporter/collector"
 )
 
 const prefix string = "cumulus_switchd_"
