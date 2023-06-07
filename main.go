@@ -84,7 +84,7 @@ func startServer() {
 	log.Infof("Starting cumulus-exporter (version: %s)", version)
 	initialize()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_ = w.Write([]byte(`<html>
+		_, _ = w.Write([]byte(`<html>
             <head><title>cumulus-exporter (Version ` + version + `)</title></head>
             <body>
             <h1>cumulus-exporter</h1>
