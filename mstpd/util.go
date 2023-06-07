@@ -41,7 +41,7 @@ func ShowPortDetail(mstpctlPath string, bridgeName string) (ShowPortDetailResult
 	cmd.Stderr = &stderrBuffer
 	err := cmd.Run()
 	if err != nil {
-		return res, errors.Wrapf(err, "Executing '%s showportdetail %s json' failed, stderr reads: %s", mstpctlPath, bridgeName, string(stderrBuffer.Bytes()))
+		return res, errors.Wrapf(err, "Executing '%s showportdetail %s json' failed, stderr reads: %s", mstpctlPath, bridgeName, stderrBuffer.String())
 	}
 
 	err = json.Unmarshal(stdoutBuffer.Bytes(), &res)
