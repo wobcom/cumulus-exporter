@@ -6,7 +6,7 @@
 > Do not yet use the ASIC collector, as there is a known bug in current cumulus releases.
 
 It provides the following metrics:
-* Transceiver statistics (RX / TX power, voltage, temperature, ...) by including the [transceiver-exporter](https://gitlab.com/wobcom/transceiver-exporter)
+* Transceiver statistics (RX / TX power, voltage, temperature, ...) by including the [transceiver-exporter](https://github.com/wobcom/transceiver-exporter)
 * MSTPD statistics (port (forwarding) states)
 * ASIC statistics as exposed in `/cumulus/switchd`
 * HWMON statistics (*needs configuration*)

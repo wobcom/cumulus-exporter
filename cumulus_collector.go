@@ -6,7 +6,7 @@ import (
 	"gitlab.com/wobcom/cumulus-exporter/collector"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/log"
+	log "github.com/sirupsen/logrus"
 )
 
 type cumulusCollector struct{}

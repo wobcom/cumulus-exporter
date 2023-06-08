@@ -7,13 +7,13 @@ import (
 	"os"
 	"strings"
 
+	"github.com/wobcom/transceiver-exporter/transceiver-collector"
 	"gitlab.com/wobcom/cumulus-exporter/asic"
 	"gitlab.com/wobcom/cumulus-exporter/collector"
 	"gitlab.com/wobcom/cumulus-exporter/hwmon"
 	"gitlab.com/wobcom/cumulus-exporter/mstpd"
-	"gitlab.com/wobcom/transceiver-exporter/transceiver-collector"
 
-	"github.com/prometheus/common/log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -64,7 +64,7 @@ func initialize() {
 		for index, blacklistedIfaceName := range blacklistedIfaceNames {
 			blacklistedIfaceNames[index] = strings.Trim(blacklistedIfaceName, " ")
 		}
-		enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, *collectInterfaceFeatures))
+		enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, *collectInterfaceFeatures, false))
 	}
 	if *hwmonCollector {
 		log.Info("hwmon collector enabled")
@@ -104,7 +104,6 @@ func handleMetricsRequest(w http.ResponseWriter, request *http.Request) {
 	registry.MustRegister(newCumulusCollector())
 
 	promhttp.HandlerFor(registry, promhttp.HandlerOpts{
-		ErrorLog:      log.NewErrorLogger(),
 		ErrorHandling: promhttp.ContinueOnError,
 	}).ServeHTTP(w, request)
 }
