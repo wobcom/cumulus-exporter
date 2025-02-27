@@ -19,7 +19,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-const version string = "1.0"
+const version string = "1.0.8"
 
 var (
 	showVersion              = flag.Bool("version", false, "Print version and exit")
@@ -39,7 +39,7 @@ var (
 func printVersion() {
 	fmt.Println("cumulus-exporter")
 	fmt.Printf("Version: %s\n", version)
-	fmt.Println("Author(s): @fluepke")
+	fmt.Println("Author(s): @fluepke, @jwagner")
 	fmt.Println("Exposes varies metrics from devices running the Cumulus Linux operating system")
 }
 
