@@ -33,6 +33,7 @@ var (
 	hwmonCollectorConfig     = flag.String("collectors.hwmon.config", "hwmon.yml", "hwmon collector config file")
 	mstpdCollector           = flag.Bool("collectors.mstpd", false, "Enable mstpd collector")
 	mstpctlPath              = flag.String("collectors.mstpd.mstpctl-path", "/sbin/mstpctl", "mstpctl binary path")
+	logLevel                 = flag.String("log.level", "info", "The level the application logs at")
 	enabledCollectors        []collector.Collector
 )
 
@@ -43,8 +44,18 @@ func printVersion() {
 	fmt.Println("Exposes varies metrics from devices running the Cumulus Linux operating system")
 }
 
+func setLogLevel() {
+	level, err := log.ParseLevel(*logLevel)
+	if err != nil {
+		fmt.Printf("log level %s is unknown: %v\n", level, err)
+		level = log.InfoLevel
+	}
+	log.SetLevel(level)
+}
+
 func main() {
 	flag.Parse()
+	setLogLevel()
 
 	if *showVersion {
 		printVersion()
