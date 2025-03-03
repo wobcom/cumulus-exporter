@@ -18,4 +18,4 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         md5sum: false
-        extra_files: README.md,CHANGELOG.md
+        extra_files: README.md
