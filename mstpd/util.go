@@ -10,12 +10,15 @@ import (
 
 // GetBridges returns a list of the system's bridge interface names
 func GetBridges() ([]string, error) {
+	var res []string
+
 	handle, err := netlink.NewHandle()
-	defer handle.Delete()
-	res := []string{}
 	if err != nil {
 		return res, errors.Wrap(err, "Could not get netlink handle")
+	} else {
+		defer handle.Close()
 	}
+
 	linkList, err := handle.LinkList()
 	if err != nil {
 		return res, errors.Wrap(err, "Could not get system link list")
