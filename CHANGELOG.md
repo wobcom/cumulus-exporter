@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.10 - 2025-03-03
+* Small refactors and go pipeline fixes
+
 ## 1.0.9 - 2025-03-03
 * Update transceiver collector
   * Add include / exclude regex to command arguments

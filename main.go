@@ -20,7 +20,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-const version string = "1.0.8"
+const version string = "1.0.10"
 
 var (
 	showVersion              = flag.Bool("version", false, "Print version and exit")
