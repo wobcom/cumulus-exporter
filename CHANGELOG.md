@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.9 - 2025-03-03
+* Update transceiver collector
+  * Add include / exclude regex to command arguments
+* Add log commandline argument
+* Update all dependencies to latest
+
 ## 1.0.1 - 2020-07-14
 Fixed a bug where the scrape would fail due to reading bad data
 
