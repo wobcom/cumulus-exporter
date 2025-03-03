@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/wobcom/transceiver-exporter/transceiver-collector"
@@ -29,6 +30,9 @@ var (
 	transceiverCollector     = flag.Bool("collectors.transceiver", false, "Enable transceiver collector (rx / tx power, temperatures, etc.)")
 	collectInterfaceFeatures = flag.Bool("collectors.transceiver.interface-features", false, "Collect interface features (results in many time series")
 	excludeInterfaces        = flag.String("collectors.transceiver.exclude-interfaces", "", "Comma seperated list of interfaces to exclude from scrape")
+	includeInterfaces        = flag.String("collectors.transceiver.include-interfaces", "", "Comma seperated list of interfaces to include from scrape")
+	excludeInterfacesRegex   = flag.String("collectors.transceiver.exclude-interfaces-regex", "", "Regex Expression for interfaces to exclude from scrape")
+	includeInterfacesRegex   = flag.String("collectors.transceiver.include-interfaces-regex", "", "Regex Expression for interfaces to include from scrape")
 	hwmonCollector           = flag.Bool("collectors.hwmon", false, "Enable hwmon collector")
 	hwmonCollectorConfig     = flag.String("collectors.hwmon.config", "hwmon.yml", "hwmon collector config file")
 	mstpdCollector           = flag.Bool("collectors.mstpd", false, "Enable mstpd collector")
@@ -71,11 +75,26 @@ func initialize() {
 	}
 	if *transceiverCollector {
 		log.Info("transceiver collector enabled")
+
 		blacklistedIfaceNames := strings.Split(*excludeInterfaces, ",")
 		for index, blacklistedIfaceName := range blacklistedIfaceNames {
 			blacklistedIfaceNames[index] = strings.Trim(blacklistedIfaceName, " ")
 		}
-		enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, *collectInterfaceFeatures, false))
+
+		includedIfaceNames := strings.Split(*includeInterfaces, ",")
+		for index, includedIfaceName := range includedIfaceNames {
+			includedIfaceNames[index] = strings.Trim(includedIfaceName, " ")
+		}
+
+		includeIfaceRegex, includeErr := regexp.Compile(*includeInterfacesRegex)
+		excludeIfaceRegex, excludeErr := regexp.Compile(*excludeInterfacesRegex)
+		if includeErr != nil {
+			log.Errorf("Could not compile include interface regex expression \"%s\". Disabling transceiver collector.", includeErr)
+		} else if excludeErr != nil {
+			log.Errorf("Could not compile exlude interface regex expression \"%s\". Disabling transceiver collector.", excludeErr)
+		} else {
+			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, includeIfaceRegex, excludeIfaceRegex, true, *collectInterfaceFeatures, false))
+		}
 	}
 	if *hwmonCollector {
 		log.Info("hwmon collector enabled")
