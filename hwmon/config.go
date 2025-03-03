@@ -2,7 +2,7 @@ package hwmon
 
 import (
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
+	"os"
 )
 
 // Configuration passed to NewCollector
@@ -20,7 +20,7 @@ type SensorConfiguration struct {
 
 // LoadConfiguration loads and returns a configuration from a given filepath
 func LoadConfiguration(path string) (*Configuration, error) {
-	file, err := ioutil.ReadFile(path)
+	file, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
