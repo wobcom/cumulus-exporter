@@ -2,8 +2,6 @@ module gitlab.com/wobcom/cumulus-exporter
 
 go 1.22
 
-toolchain go1.23.2
-
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.21.0
