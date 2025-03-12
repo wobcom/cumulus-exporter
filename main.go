@@ -107,7 +107,7 @@ func initialize() {
 			log.Errorf("Could not compile include interface regex expression \"%s\". Disabling transceiver collector.", includeErr)
 		} else if excludeErr != nil {
 			log.Errorf("Could not compile exlude interface regex expression \"%s\". Disabling transceiver collector.", excludeErr)
-    } else if len(includedIfaceNames) > 0 && len(includedIfaceNames) > 0 {
+    } else if len(includedIfaceNames) > 0 && len(blacklistedIfaceNames) > 0 {
       log.Errorf("Can't include and exclude interfaces at the same time. Disabling transceiver collector.")
 		} else {
 			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, includeIfaceRegex, excludeIfaceRegex, true, *collectInterfaceFeatures, false))
