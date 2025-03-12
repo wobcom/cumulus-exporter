@@ -78,20 +78,37 @@ func initialize() {
 
 		blacklistedIfaceNames := strings.Split(*excludeInterfaces, ",")
 		for index, blacklistedIfaceName := range blacklistedIfaceNames {
-			blacklistedIfaceNames[index] = strings.Trim(blacklistedIfaceName, " ")
+			blacklistedIfaceNames[index] = strings.TrimSpace(blacklistedIfaceName)
 		}
+    if len(blacklistedIfaceNames) == 1 && blacklistedIfaceNames[0] == "" {
+      blacklistedIfaceNames = []string{}
+    }
 
 		includedIfaceNames := strings.Split(*includeInterfaces, ",")
 		for index, includedIfaceName := range includedIfaceNames {
-			includedIfaceNames[index] = strings.Trim(includedIfaceName, " ")
+			includedIfaceNames[index] = strings.TrimSpace(includedIfaceName)
 		}
+    if len(includedIfaceNames) == 1 && includedIfaceNames[0] == "" {
+      includedIfaceNames = []string{}
+    }
 
-		includeIfaceRegex, includeErr := regexp.Compile(*includeInterfacesRegex)
-		excludeIfaceRegex, excludeErr := regexp.Compile(*excludeInterfacesRegex)
+    var includeIfaceRegex *regexp.Regexp
+    var includeErr error
+    if includeInterfacesRegex != nil && *includeInterfacesRegex != "" {
+		   includeIfaceRegex, includeErr = regexp.Compile(*includeInterfacesRegex)
+    }
+    var excludeIfaceRegex *regexp.Regexp
+    var excludeErr error
+    if excludeInterfacesRegex != nil && *excludeInterfacesRegex != "" {
+		  excludeIfaceRegex, excludeErr = regexp.Compile(*excludeInterfacesRegex)
+    }
+
 		if includeErr != nil {
 			log.Errorf("Could not compile include interface regex expression \"%s\". Disabling transceiver collector.", includeErr)
 		} else if excludeErr != nil {
 			log.Errorf("Could not compile exlude interface regex expression \"%s\". Disabling transceiver collector.", excludeErr)
+    } else if len(includedIfaceNames) > 0 && len(includedIfaceNames) > 0 {
+      log.Errorf("Can't include and exclude interfaces at the same time. Disabling transceiver collector.")
 		} else {
 			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, includeIfaceRegex, excludeIfaceRegex, true, *collectInterfaceFeatures, false))
 		}
