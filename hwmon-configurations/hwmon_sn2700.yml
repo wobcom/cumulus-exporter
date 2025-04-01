@@ -1,3 +1,5 @@
+# cumulus-exporter hwmon.yml configuration file
+# for Mellanox SN2700 CS2RC (MSN2700-CS2RC)
 sensors:
         - description: Fan Tray 1 Fan 1 RPM speed
           driver_hwmon: fan7

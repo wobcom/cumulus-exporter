@@ -1,3 +1,5 @@
+# cumulus-exporter hwmon.yml configuration file
+# for Mellanox SN2410 CB2RC (MSN2410-CB2RC)
 sensors:
         - description: Fan 1 RPM speed
           driver_hwmon: fan8
