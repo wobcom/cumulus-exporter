@@ -27,4 +27,4 @@ jobs:
         goarch: ${{ matrix.goarch }}
         goarm: ${{ matrix.goarm }}
         md5sum: false
-        extra_files: README.md
+        extra_files: README.md hwmon-configurations
