@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.12 - 2025-04-02
+* Added prepared hwmon.yml files for easier rollout
+
 ## 1.0.10 - 2025-03-03
 * Small refactors and go pipeline fixes
 
