@@ -1,0 +1,82 @@
+# cumulus-exporter hwmon.yml configuration file
+# for Mellanox SN2410 CB2RC (MSN2410-CB2RC)
+sensors:
+        - description: Fan 1 RPM speed
+          driver_hwmon: fan8
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan 2 RPM speed
+          driver_hwmon: fan7
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 2 Fan 3 RPM speed
+          driver_hwmon: fan6
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 2 Fan 4 RPM speed
+          driver_hwmon: fan5
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 3 Fan 5 RPM speed
+          driver_hwmon: fan4
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 3 Fan 6 RPM speed
+          driver_hwmon: fan3
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 4 Fan 7 RPM speed
+          driver_hwmon: fan2
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: Fan Tray 4 Fan 8 RPM speed
+          driver_hwmon: fan1
+          type: fan
+          driver_path: /sys/class/hwmon/hwmon10
+        - description: PSU 1 Power status
+          type: raw
+          driver_path: /sys/class/hwmon/hwmon0/pwr1
+        - description: PSU 2 Power status
+          type: raw
+          driver_path: /sys/class/hwmon/hwmon0/pwr2
+        - description: PSU 1 Fan 1 RPM speed
+          type: fan
+          driver_hwmon: fan1
+          driver_path: /sys/class/hwmon/hwmon2
+        - description: PSU 2 Fan 1 RPM speed
+          type: fan
+          driver_hwmon: fan1
+          driver_path: /sys/class/hwmon/hwmon3
+        - description: PSU 1 Temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon2
+        - description: PSU 2 Temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon3
+        - description: CPU Package temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon4
+        - description: CPU Core 0 temperature
+          type: temp
+          driver_hwmon: temp2
+          driver_path: /sys/class/hwmon/hwmon4
+        - description: CPU Core 1 temperature
+          type: temp
+          driver_hwmon: temp3
+          driver_path: /sys/class/hwmon/hwmon4
+        - description: Port ambient temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon8
+        - description: Main board ambient temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon9
+        - description: Asic temperature
+          type: temp
+          driver_hwmon: temp1
+          driver_path: /sys/class/hwmon/hwmon10
+

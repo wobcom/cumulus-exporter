@@ -39,11 +39,13 @@ Usage of cumulus-exporter:
 ```
 
 ## Hwmon configuration
-The kernel's hwmon interface provides no means of enumerating sensors, so you have to provide some information
+The kernel's hwmon interface provides no means of enumerating sensors, so you have to provide some information.
 
-You can figure out some sensors by running `smonctl --json`.
+We have included hwmon configurations for some common models supported by Cumulus Linux in hwmon-configurations.
 
-Supply the following format:
+In case your device is not listed in here, you can figure out some sensors by running `smonctl -v --json`.
+
+Supply the following format to the cumulus-exporter:
 ```yaml
 sensors:
   - description: "Asic Temp Sensor"
