@@ -158,7 +158,7 @@ type parserFunc func(string, string, string) prometheus.Metric
 
 func getParsers(sensorType string) []parserFunc {
 	return map[string][]parserFunc{
-		"voltage": []parserFunc{
+		"voltage": {
 			makeDefaultParser(voltageMinDesc, "_min", 1000),
 			makeDefaultParser(voltageCriticalMinDesc, "_lcrit", 1000),
 			makeDefaultParser(voltageMaxDesc, "_max", 1000),
@@ -166,7 +166,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(voltageLabelInfoDesc, "_label"),
 			makeDefaultParser(voltageSensorEnabledDesc, "_enable", 1),
 		},
-		"fan": []parserFunc{
+		"fan": {
 			makeDefaultParser(fanMinDesc, "_min", 1),
 			makeDefaultParser(fanMaxDesc, "_max", 1),
 			makeDefaultParser(fanDesc, "_input", 1),
@@ -176,7 +176,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(fanLabelsDesc, "_label"),
 			makeDefaultParser(fanSensorEnabledDesc, "_enable", 1),
 		},
-		"temp": []parserFunc{
+		"temp": {
 			makeTemperatureSensorTypeParser(temperatureTypeDesc, "_type"),
 			makeDefaultParser(temperatureMaxDesc, "_max", 1000),
 			makeDefaultParser(temperatureMinDesc, "_min", 1000),
@@ -193,7 +193,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(temperatureLabelDesc, "_label"),
 			makeDefaultParser(temperatureSensorEnabledDesc, "_enable", 1),
 		},
-		"current": []parserFunc{
+		"current": {
 			makeDefaultParser(currentMaxDesc, "_max", 1000),
 			makeDefaultParser(currentMinDesc, "_min", 1000),
 			makeDefaultParser(currentCriticalMinValue, "_lcrit", 1000),
@@ -201,7 +201,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeDefaultParser(currentDesc, "_input", 1000),
 			makeDefaultParser(currentSensorEnabledDesc, "_enable", 1),
 		},
-		"raw": []parserFunc{
+		"raw": {
 			makeRawParser(rawValueDesc),
 		},
 	}[sensorType]
@@ -255,12 +255,10 @@ func makeRawParser(metricDesc *prometheus.Desc) parserFunc {
 	}
 }
 
-// Name returns the string "HwmonCollector"
 func (*Collector) Name() string {
 	return "HwmonCollector"
 }
 
-// Collect implements collector.Collector interface Collect function
 func (c *Collector) Collect(metrics chan<- prometheus.Metric, errorChan chan error, done chan struct{}) {
 	defer func() {
 		done <- struct{}{}
