@@ -1,6 +1,8 @@
 module gitlab.com/wobcom/cumulus-exporter
 
-go 1.22
+go 1.23.0
+
+toolchain go1.24.1
 
 require (
 	github.com/pkg/errors v0.9.1
@@ -8,6 +10,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/vishvananda/netlink v1.3.0
 	github.com/wobcom/transceiver-exporter v1.5.1
+	golang.org/x/sync v0.13.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 

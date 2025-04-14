@@ -34,7 +34,8 @@ var (
 	excludeInterfacesRegex   = flag.String("collectors.transceiver.exclude-interfaces-regex", "", "Regex Expression for interfaces to exclude from scrape")
 	includeInterfacesRegex   = flag.String("collectors.transceiver.include-interfaces-regex", "", "Regex Expression for interfaces to include from scrape")
 	hwmonCollector           = flag.Bool("collectors.hwmon", false, "Enable hwmon collector")
-	hwmonCollectorConfig     = flag.String("collectors.hwmon.config", "hwmon.yml", "hwmon collector config file")
+	hwmonCollectorConfigPath = flag.String("collectors.hwmon.config", "", "hwmon collector config file")
+	hwmonDisableDynamic      = flag.Bool("collectors.hwmon.disable-dynamic", false, "Disable hwmon collectors dynamic smonctl parsing")
 	mstpdCollector           = flag.Bool("collectors.mstpd", false, "Enable mstpd collector")
 	mstpctlPath              = flag.String("collectors.mstpd.mstpctl-path", "/sbin/mstpctl", "mstpctl binary path")
 	logLevel                 = flag.String("log.level", "info", "The level the application logs at")
@@ -113,15 +114,22 @@ func initialize() {
 			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, includeIfaceRegex, excludeIfaceRegex, true, *collectInterfaceFeatures, false))
 		}
 	}
+
 	if *hwmonCollector {
 		log.Info("hwmon collector enabled")
-		hwmonCollectorConfig, err := hwmon.LoadConfiguration(*hwmonCollectorConfig)
-		if err != nil {
-			log.Errorf("Could not load hwmon collector config file: %v. Disabling hwmon collector.", err)
-		} else {
-			enabledCollectors = append(enabledCollectors, hwmon.NewCollector(hwmonCollectorConfig))
-		}
+
+    var hwmonCollectorConfig *hwmon.Configuration
+    if *hwmonCollectorConfigPath != "" {
+      var err error
+      hwmonCollectorConfig, err = hwmon.LoadConfiguration(*hwmonCollectorConfigPath)
+      if err != nil {
+        log.Warnf("Could not load hwmon collector config file: %v. Using.", err)
+        hwmonCollectorConfig = nil
+      }
+    }
+    enabledCollectors = append(enabledCollectors, hwmon.NewCollector(hwmonCollectorConfig, *hwmonDisableDynamic, 10000))
 	}
+
 	if *mstpdCollector {
 		enabledCollectors = append(enabledCollectors, mstpd.NewCollector(*mstpctlPath))
 	}
