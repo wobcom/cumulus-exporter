@@ -1,7 +1,6 @@
 # Changelog
 
 ## 1.0.12 - 2025-04-02
-* Added automatic discovery for hwmon scrape targets
 * Added prepared hwmon.yml files for easier rollout
 
 ## 1.0.10 - 2025-03-03
