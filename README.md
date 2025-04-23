@@ -33,7 +33,7 @@ Usage of cumulus-exporter:
   -collectors.transceiver.include-interfaces-regex string
         Regex Expression for interfaces to include from scrape
   -collectors.transceiver.interface-features
-        Collect interface features (results in many time series
+        Collect interface features (results in many time series)
   -log.level string
         The level the application logs at (default "info")
   -version

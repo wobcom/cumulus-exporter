@@ -28,7 +28,7 @@ var (
 	metricsPath              = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics")
 	asicCollector            = flag.Bool("collectors.asic", false, "Enable ASIC collector")
 	transceiverCollector     = flag.Bool("collectors.transceiver", false, "Enable transceiver collector (rx / tx power, temperatures, etc.)")
-	collectInterfaceFeatures = flag.Bool("collectors.transceiver.interface-features", false, "Collect interface features (results in many time series")
+	collectInterfaceFeatures = flag.Bool("collectors.transceiver.interface-features", false, "Collect interface features (results in many time series)")
 	excludeInterfaces        = flag.String("collectors.transceiver.exclude-interfaces", "", "Comma seperated list of interfaces to exclude from scrape")
 	includeInterfaces        = flag.String("collectors.transceiver.include-interfaces", "", "Comma seperated list of interfaces to include from scrape")
 	excludeInterfacesRegex   = flag.String("collectors.transceiver.exclude-interfaces-regex", "", "Regex Expression for interfaces to exclude from scrape")
