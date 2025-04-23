@@ -59,6 +59,9 @@ var (
 	currentDesc              *prometheus.Desc
 	currentSensorEnabledDesc *prometheus.Desc
 
+	powerPresent *prometheus.Desc
+	powerAllOk   *prometheus.Desc
+
 	rawValueDesc *prometheus.Desc
 )
 
@@ -105,6 +108,9 @@ func init() {
 	currentCriticalMaxValue  = prometheus.NewDesc(prefix+"current_critical_max_ampere", "Current critical high value. Unit: Ampere", sensorLabels, nil)
 	currentDesc              = prometheus.NewDesc(prefix+"current_ampere", "Current input value. Unit: Ampere", sensorLabels, nil)
 	currentSensorEnabledDesc = prometheus.NewDesc(prefix+"current_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
+
+	powerPresent = prometheus.NewDesc(prefix+"present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
+	powerAllOk   = prometheus.NewDesc(prefix+"all_ok", "Is PSU Ok. 1 = OK, 0 = KO", sensorLabels, nil)
 
 	rawValueDesc = prometheus.NewDesc(prefix+"raw_sensor_reading", "Arbitrary sensor reading, see labels on how to interpret this value", []string{"path", "description"}, nil)
 }
@@ -166,6 +172,9 @@ func (*Collector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- currentCriticalMaxValue
 	ch <- currentDesc
 	ch <- currentSensorEnabledDesc
+
+	ch <- powerPresent
+	ch <- powerAllOk
 }
 
 type parserFunc func(string, string, string) prometheus.Metric
@@ -214,6 +223,10 @@ func getParsers(sensorType string) []parserFunc {
 			makeDefaultParser(currentCriticalMaxValue, "_crit", 1000),
 			makeDefaultParser(currentDesc, "_input", 1000),
 			makeDefaultParser(currentSensorEnabledDesc, "_enable", 1),
+		},
+		"power": {
+			makeDefaultParser(powerPresent, "_present", 1),
+			makeDefaultParser(powerAllOk, "_all_ok", 1),
 		},
 		"raw": {
 			makeRawParser(rawValueDesc),
