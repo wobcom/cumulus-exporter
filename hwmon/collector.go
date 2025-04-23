@@ -278,13 +278,13 @@ func (c *Collector) Collect(metrics chan<- prometheus.Metric, errorChan chan err
 	}()
 
 	wg := &sync.WaitGroup{}
-	wg.Add(len(c.config.Sensors))
 
 	for _, sensorConfiguration := range c.config.Sensors {
-		collectSensor(sensorConfiguration, metrics, wg)
+		wg.Add(1)
+		go collectSensor(sensorConfiguration, metrics, wg)
 	}
 
-	//wg.Wait()
+	wg.Wait()
 }
 
 func collectSensor(sensorConfig *SensorConfiguration, metrics chan<- prometheus.Metric, wg *sync.WaitGroup) {
