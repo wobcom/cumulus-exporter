@@ -49,7 +49,7 @@ Usage of cumulus-exporter:
 ```
 
 ## Hwmon configuration
-[!NOTE]
+> [!NOTE]
 > By default, smonctl is used to enumerate the exposed hwmon sensors. This should cover pretty much all use cases and is automatically used when enabling the hwmon collector. No extra configuration is needed.
 
 For all other use cases that aren't automatically picked up by the discovery, a configuration file can be supplied.
