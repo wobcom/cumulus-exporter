@@ -3,8 +3,6 @@
 
 **cumulus-exporter** is a [Prometheus](https://github.com/prometheus/prometheus) exporter, that exposes metrics from switching and routing platforms running on [Cumulus Linux](https://cumulusnetworks.com/products/cumulus-linux/) based hosts alongside the [node_exporter](https://github.com/prometheus/node_exporter).
 
-> Do not yet use the ASIC collector, as there is a known bug in current cumulus releases.
-
 It provides the following metrics:
 * Transceiver statistics (RX / TX power, voltage, temperature, ...) by including the [transceiver-exporter](https://github.com/wobcom/transceiver-exporter)
 * MSTPD statistics (port (forwarding) states)
