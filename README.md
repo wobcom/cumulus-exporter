@@ -19,27 +19,15 @@ Usage of cumulus-exporter:
   -collectors.hwmon
     	Enable hwmon collector
   -collectors.hwmon.config string
-    	hwmon collector config file
-  -collectors.hwmon.disable-dynamic
-    	Disable hwmon collectors dynamic smonctl parsing
+    	hwmon collector config file (default "hwmon.yml")
   -collectors.mstpd
     	Enable mstpd collector
   -collectors.mstpd.mstpctl-path string
     	mstpctl binary path (default "/sbin/mstpctl")
   -collectors.transceiver
     	Enable transceiver collector (rx / tx power, temperatures, etc.)
-  -collectors.transceiver.exclude-interfaces string
-    	Comma seperated list of interfaces to exclude from scrape
-  -collectors.transceiver.exclude-interfaces-regex string
-    	Regex Expression for interfaces to exclude from scrape
-  -collectors.transceiver.include-interfaces string
-    	Comma seperated list of interfaces to include from scrape
-  -collectors.transceiver.include-interfaces-regex string
-    	Regex Expression for interfaces to include from scrape
   -collectors.transceiver.interface-features
     	Collect interface features (results in many time series
-  -log.level string
-    	The level the application logs at (default "info")
   -version
     	Print version and exit
   -web.listen-address string
@@ -49,10 +37,7 @@ Usage of cumulus-exporter:
 ```
 
 ## Hwmon configuration
-> [!NOTE]
-> By default, smonctl is used to enumerate the exposed hwmon sensors. This should cover pretty much all use cases and is automatically used when enabling the hwmon collector. No extra configuration is needed.
-
-For all other use cases that aren't automatically picked up by the discovery, a configuration file can be supplied.
+The kernel's hwmon interface provides no means of enumerating sensors, so you have to provide some information.
 
 We have included hwmon configurations for some common models supported by Cumulus Linux in hwmon-configurations.
 
