@@ -14,7 +14,7 @@ It provides the following metrics:
 ## Usage
 ```
 Usage of cumulus-exporter:
-  -collecotrs.transceiver.exclude-interfaces string
+  -collectors.transceiver.exclude-interfaces string
     	Comma seperated list of interfaces to exclude from scrape
   -collectors.asic
     	Enable ASIC collector
