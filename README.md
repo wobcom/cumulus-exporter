@@ -12,28 +12,36 @@ It provides the following metrics:
 ## Usage
 ```
 Usage of cumulus-exporter:
-  -collectors.transceiver.exclude-interfaces string
-    	Comma seperated list of interfaces to exclude from scrape
   -collectors.asic
-    	Enable ASIC collector
+        Enable ASIC collector
   -collectors.hwmon
-    	Enable hwmon collector
+        Enable hwmon collector
   -collectors.hwmon.config string
-    	hwmon collector config file (default "hwmon.yml")
+        hwmon collector config file (default "hwmon.yml")
   -collectors.mstpd
-    	Enable mstpd collector
+        Enable mstpd collector
   -collectors.mstpd.mstpctl-path string
-    	mstpctl binary path (default "/sbin/mstpctl")
+        mstpctl binary path (default "/sbin/mstpctl")
   -collectors.transceiver
-    	Enable transceiver collector (rx / tx power, temperatures, etc.)
+        Enable transceiver collector (rx / tx power, temperatures, etc.)
+  -collectors.transceiver.exclude-interfaces string
+        Comma seperated list of interfaces to exclude from scrape
+  -collectors.transceiver.exclude-interfaces-regex string
+        Regex Expression for interfaces to exclude from scrape
+  -collectors.transceiver.include-interfaces string
+        Comma seperated list of interfaces to include from scrape
+  -collectors.transceiver.include-interfaces-regex string
+        Regex Expression for interfaces to include from scrape
   -collectors.transceiver.interface-features
-    	Collect interface features (results in many time series
+        Collect interface features (results in many time series
+  -log.level string
+        The level the application logs at (default "info")
   -version
-    	Print version and exit
+        Print version and exit
   -web.listen-address string
-    	Address to listen on (default "[::]:9457")
+        Address to listen on (default "[::]:9457")
   -web.telemetry-path string
-    	Path under which to expose metrics (default "/metrics")
+        Path under which to expose metrics (default "/metrics")
 ```
 
 ## Hwmon configuration
