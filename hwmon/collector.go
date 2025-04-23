@@ -1,19 +1,9 @@
 package hwmon
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"os/exec"
-	"sync"
-	"time"
-
-	log "github.com/sirupsen/logrus"
-	"golang.org/x/sync/semaphore"
-
 	"github.com/prometheus/client_golang/prometheus"
 	"gitlab.com/wobcom/cumulus-exporter/util"
+	"sync"
 )
 
 const prefix = "hwmon_"
@@ -118,16 +108,12 @@ func init() {
 // Collector collects hwmon metrics from the /sys filesystem
 type Collector struct {
 	config *Configuration
-  disableDynamic bool
-  dynamicTimeoutMs int64
 }
 
 // NewCollector returns a new Collector instance
-func NewCollector(config *Configuration, disableDynamic bool, dynamicTimeoutMs int64) *Collector {
+func NewCollector(config *Configuration) *Collector {
 	return &Collector{
 		config: config,
-    disableDynamic: disableDynamic,
-		dynamicTimeoutMs: dynamicTimeoutMs,
 	}
 }
 
@@ -292,87 +278,22 @@ func (c *Collector) Collect(metrics chan<- prometheus.Metric, errorChan chan err
 	}()
 
 	wg := &sync.WaitGroup{}
+	wg.Add(len(c.config.Sensors))
 
-  sensors := []*SensorConfiguration{}
-  if c.config != nil {
-    sensors = append(sensors, c.config.Sensors...)
-  }
-  if !c.disableDynamic {
-    sensors = append(sensors, c.fetchDynamicSensors(errorChan)...);
-  }
-
-	maxConcurrentSensors := 10
-	sem := semaphore.NewWeighted(int64(maxConcurrentSensors))
-	ctx := context.Background()
-
-	for _, sensorConfigurationLoop := range sensors {
-		sensorConfig := sensorConfigurationLoop
-
-		if err := sem.Acquire(ctx, 1); err != nil {
-			// shouldn't happen unless cancelled
-			log.Printf("Failed to aquire semaphore: %v", err)
-			break
-		}
-
-	  wg.Add(1)
-		go func(sc *SensorConfiguration) {
-			defer sem.Release(1)
-			defer wg.Done()
-
-			collectSensor(sensorConfig, metrics)
-		}(sensorConfig)
+	for _, sensorConfiguration := range c.config.Sensors {
+		collectSensor(sensorConfiguration, metrics, wg)
 	}
 
-	wg.Wait()
+	//wg.Wait()
 }
 
-func (c *Collector) fetchDynamicSensors(errorChan chan error) []*SensorConfiguration {
-  var sensors []*SensorConfiguration
+func collectSensor(sensorConfig *SensorConfiguration, metrics chan<- prometheus.Metric, wg *sync.WaitGroup) {
+	defer wg.Done()
 
-  ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.dynamicTimeoutMs) * time.Millisecond)
-	defer cancel()
-
-  cmd := exec.CommandContext(ctx, "smonctl", "-v", "--json")
-
-	log.Printf("Running command: %s", cmd.String())
-	output, err := cmd.Output()
-
-	if err != nil {
-		var finalErr error
-		if errors.Is(err, context.DeadlineExceeded) {
-			finalErr = fmt.Errorf("smonctl command timed out after %d ms: %w", c.dynamicTimeoutMs, err)
-		} else {
-			finalErr = fmt.Errorf("smonctl command execution failed: %s", err)
-		}
-
-		log.Warn(finalErr.Error())
-		errorChan <- finalErr
-
-		return nil
-	}
-
-	err = json.Unmarshal(output, &sensors)
-	if err != nil {
-		finalErr := fmt.Errorf("failed to unmarshal json output: %w", err)
-
-		log.Warn(finalErr.Error())
-		errorChan <- finalErr
-
-		return nil
-	}
-
-	log.Printf("Successfully fetched and parsed %d dynamic sensors", len(sensors))
-	return sensors
-}
-
-func collectSensor(sensorConfig *SensorConfiguration, metrics chan<- prometheus.Metric) {
 	applicableParsers := getParsers(sensorConfig.Type)
 
 	for _, parser := range applicableParsers {
-		if len(sensorConfig.DriverHwmon) == 0 {
-			continue
-		}
-		metric := parser(sensorConfig.DriverPath, sensorConfig.DriverHwmon[0], sensorConfig.Description)
+		metric := parser(sensorConfig.DriverPath, sensorConfig.DriverHwmon, sensorConfig.Description)
 
 		if metric != nil {
 			metrics <- metric

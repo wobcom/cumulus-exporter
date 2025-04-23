@@ -12,10 +12,10 @@ type Configuration struct {
 
 // SensorConfiguration sensor to scrape
 type SensorConfiguration struct {
-	Description string   `yaml:"description" json:"description"`
-	DriverPath  string   `yaml:"driver_path" json:"driver_path"`
-	DriverHwmon []string `yaml:"driver_hwmon,omitempty" json:"driver_hwmon,omitempty"`
-	Type        string   `yaml:"type" json:"type"`
+	Description string `yaml:"description"`
+	DriverPath  string `yaml:"driver_path"`
+	DriverHwmon string `yaml:"driver_hwmon,omitempty"`
+	Type        string `yaml:"type"`
 }
 
 // LoadConfiguration loads and returns a configuration from a given filepath
