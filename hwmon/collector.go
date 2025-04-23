@@ -49,6 +49,9 @@ var (
 	currentDesc              *prometheus.Desc
 	currentSensorEnabledDesc *prometheus.Desc
 
+	powerPresent *prometheus.Desc
+	powerAllOk   *prometheus.Desc
+
 	rawValueDesc *prometheus.Desc
 )
 
@@ -56,45 +59,48 @@ func init() {
 	sensorLabels := []string{"driver_path", "hw_mon", "description"}
 	channelLabels := []string{"driver_path", "hw_mon", "description", "channel"}
 
-	voltageMinDesc = prometheus.NewDesc(prefix+"voltage_min_volts", "Voltage min value. Unit: Volts", sensorLabels, nil)
-	voltageCriticalMinDesc = prometheus.NewDesc(prefix+"voltage_critical_min_volts", "Voltage critical min value. Unit: Volts", sensorLabels, nil)
-	voltageMaxDesc = prometheus.NewDesc(prefix+"voltage_max_volts", "Voltage max value. Unit: Volts", sensorLabels, nil)
-	voltageCriticalMaxDesc = prometheus.NewDesc(prefix+"voltage_critical_max_volts", "Voltage critical max value. Unit: Volts", sensorLabels, nil)
-	voltageDesc = prometheus.NewDesc(prefix+"voltage_volts", "Voltage input value. Unit: Volts", sensorLabels, nil)
-	voltageLabelInfoDesc = prometheus.NewDesc(prefix+"voltage_info", "Suggested voltage channel label.", channelLabels, nil)
+	voltageMinDesc           = prometheus.NewDesc(prefix+"voltage_min_volts", "Voltage min value. Unit: Volts", sensorLabels, nil)
+	voltageCriticalMinDesc   = prometheus.NewDesc(prefix+"voltage_critical_min_volts", "Voltage critical min value. Unit: Volts", sensorLabels, nil)
+	voltageMaxDesc           = prometheus.NewDesc(prefix+"voltage_max_volts", "Voltage max value. Unit: Volts", sensorLabels, nil)
+	voltageCriticalMaxDesc   = prometheus.NewDesc(prefix+"voltage_critical_max_volts", "Voltage critical max value. Unit: Volts", sensorLabels, nil)
+	voltageDesc              = prometheus.NewDesc(prefix+"voltage_volts", "Voltage input value. Unit: Volts", sensorLabels, nil)
+	voltageLabelInfoDesc     = prometheus.NewDesc(prefix+"voltage_info", "Suggested voltage channel label.", channelLabels, nil)
 	voltageSensorEnabledDesc = prometheus.NewDesc(prefix+"voltage_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
 
-	fanMinDesc = prometheus.NewDesc(prefix+"fan_min_rpm", "Fan minimum value. Unit: revolution/min", sensorLabels, nil)
-	fanMaxDesc = prometheus.NewDesc(prefix+"fan_max_rpm", "Fan maximum value. Unit: revolution/min", sensorLabels, nil)
-	fanDesc = prometheus.NewDesc(prefix+"fan_rpm", "Fan input value. Unit: revolution/min", sensorLabels, nil)
-	fanDivisorDesc = prometheus.NewDesc(prefix+"fan_divisor", "Fan divisor. Integer value in powers of 2 (1, 2, 4, 8, 16, 32, 64, 128).", sensorLabels, nil)
-	fanPulsesDesc = prometheus.NewDesc(prefix+"fan_pulses", "Number of tachometer pulses per fan revolution", sensorLabels, nil)
-	fanTargetDesc = prometheus.NewDesc(prefix+"fan_target_rpm", "Desired fan speed. Unit: revolution/min", sensorLabels, nil)
-	fanLabelsDesc = prometheus.NewDesc(prefix+"fan_info", "Suggested fan channel label", channelLabels, nil)
+	fanMinDesc           = prometheus.NewDesc(prefix+"fan_min_rpm", "Fan minimum value. Unit: revolution/min", sensorLabels, nil)
+	fanMaxDesc           = prometheus.NewDesc(prefix+"fan_max_rpm", "Fan maximum value. Unit: revolution/min", sensorLabels, nil)
+	fanDesc              = prometheus.NewDesc(prefix+"fan_rpm", "Fan input value. Unit: revolution/min", sensorLabels, nil)
+	fanDivisorDesc       = prometheus.NewDesc(prefix+"fan_divisor", "Fan divisor. Integer value in powers of 2 (1, 2, 4, 8, 16, 32, 64, 128).", sensorLabels, nil)
+	fanPulsesDesc        = prometheus.NewDesc(prefix+"fan_pulses", "Number of tachometer pulses per fan revolution", sensorLabels, nil)
+	fanTargetDesc        = prometheus.NewDesc(prefix+"fan_target_rpm", "Desired fan speed. Unit: revolution/min", sensorLabels, nil)
+	fanLabelsDesc        = prometheus.NewDesc(prefix+"fan_info", "Suggested fan channel label", channelLabels, nil)
 	fanSensorEnabledDesc = prometheus.NewDesc(prefix+"fan_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
 
-	temperatureTypeDesc = prometheus.NewDesc(prefix+"temperature_sensor_type_selection_info", "Sensor type selection.", append(sensorLabels, "sensor_type"), nil)
-	temperatureMaxDesc = prometheus.NewDesc(prefix+"temperature_max_celsius", "Temperature max value. Unit: degree Celsius", sensorLabels, nil)
-	temperatureMinDesc = prometheus.NewDesc(prefix+"temperature_min_celsius", "Temperature min value. Unit: degree Celsius", sensorLabels, nil)
-	temperatureMaxHysteresisDesc = prometheus.NewDesc(prefix+"temperature_max_hysteresis_celsius", "Temperature hysteresis value for max limit. Unit: degree Celsius", sensorLabels, nil)
-	temperatureMinHysteresisDesc = prometheus.NewDesc(prefix+"temperature_min_hysteresis_celsius", "Temperature hysteresis value for min limit. Unit: degree Celsius", sensorLabels, nil)
-	temperatureDesc = prometheus.NewDesc(prefix+"temperature_celsius", "Temperature input value. Unit: degree Celsius", sensorLabels, nil)
-	temperatureCriticalMaxDesc = prometheus.NewDesc(prefix+"temperature_critical_max_celsius", "Temperature critical max value, typically greater than corresponding temp_max values. Unit: degree Celsius", sensorLabels, nil)
-	temperatureCriticalMaxHysteresisDesc = prometheus.NewDesc(prefix+"temperature_critical_max_hysteresis_celsius", "Temperature hysteresis value for critical limit. Unit: degree Celsius", sensorLabels, nil)
-	temperatureEmergencyMaxDesc = prometheus.NewDesc(prefix+"temperature_emergency_max_celsius", "Temperature emergency max value, for chips supporting more than two upper temperature limits. Unit: degree Celsius", sensorLabels, nil)
+	temperatureTypeDesc                   = prometheus.NewDesc(prefix+"temperature_sensor_type_selection_info", "Sensor type selection.", append(sensorLabels, "sensor_type"), nil)
+	temperatureMaxDesc                    = prometheus.NewDesc(prefix+"temperature_max_celsius", "Temperature max value. Unit: degree Celsius", sensorLabels, nil)
+	temperatureMinDesc                    = prometheus.NewDesc(prefix+"temperature_min_celsius", "Temperature min value. Unit: degree Celsius", sensorLabels, nil)
+	temperatureMaxHysteresisDesc          = prometheus.NewDesc(prefix+"temperature_max_hysteresis_celsius", "Temperature hysteresis value for max limit. Unit: degree Celsius", sensorLabels, nil)
+	temperatureMinHysteresisDesc          = prometheus.NewDesc(prefix+"temperature_min_hysteresis_celsius", "Temperature hysteresis value for min limit. Unit: degree Celsius", sensorLabels, nil)
+	temperatureDesc                       = prometheus.NewDesc(prefix+"temperature_celsius", "Temperature input value. Unit: degree Celsius", sensorLabels, nil)
+	temperatureCriticalMaxDesc            = prometheus.NewDesc(prefix+"temperature_critical_max_celsius", "Temperature critical max value, typically greater than corresponding temp_max values. Unit: degree Celsius", sensorLabels, nil)
+	temperatureCriticalMaxHysteresisDesc  = prometheus.NewDesc(prefix+"temperature_critical_max_hysteresis_celsius", "Temperature hysteresis value for critical limit. Unit: degree Celsius", sensorLabels, nil)
+	temperatureEmergencyMaxDesc           = prometheus.NewDesc(prefix+"temperature_emergency_max_celsius", "Temperature emergency max value, for chips supporting more than two upper temperature limits. Unit: degree Celsius", sensorLabels, nil)
 	temperatureEmergencyMaxHysteresisDesc = prometheus.NewDesc(prefix+"temperature_emergency_max_hysteresis_celsius", "Temperature hysteresis value for emergency limit. Unit: degree Celsius", sensorLabels, nil)
-	temperatureCriticalMinDesc = prometheus.NewDesc(prefix+"temperature_critical_min_celsius", "Temperature criticial min value, typically lower than corresponding temp_min values. Unit: degree Celsius", sensorLabels, nil)
-	temperatureCriticalMinHysteresisDesc = prometheus.NewDesc(prefix+"temperature_critical_min_hysteresis_celsius", "Temperature hysteresis value for critical min limit. Unit: degree Celsius", sensorLabels, nil)
-	temperatureOffsetDesc = prometheus.NewDesc(prefix+"temperature_offset_celsius", "Temperature offset which is added to the temperature reading by the chip. Unit: degree Celsius", sensorLabels, nil)
-	temperatureLabelDesc = prometheus.NewDesc(prefix+"temperature_label_info", "Suggested temperature channel label", channelLabels, nil)
-	temperatureSensorEnabledDesc = prometheus.NewDesc(prefix+"temperature_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
+	temperatureCriticalMinDesc            = prometheus.NewDesc(prefix+"temperature_critical_min_celsius", "Temperature criticial min value, typically lower than corresponding temp_min values. Unit: degree Celsius", sensorLabels, nil)
+	temperatureCriticalMinHysteresisDesc  = prometheus.NewDesc(prefix+"temperature_critical_min_hysteresis_celsius", "Temperature hysteresis value for critical min limit. Unit: degree Celsius", sensorLabels, nil)
+	temperatureOffsetDesc                 = prometheus.NewDesc(prefix+"temperature_offset_celsius", "Temperature offset which is added to the temperature reading by the chip. Unit: degree Celsius", sensorLabels, nil)
+	temperatureLabelDesc                  = prometheus.NewDesc(prefix+"temperature_label_info", "Suggested temperature channel label", channelLabels, nil)
+	temperatureSensorEnabledDesc          = prometheus.NewDesc(prefix+"temperature_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
 
-	currentMaxDesc = prometheus.NewDesc(prefix+"current_max_ampere", "Current max value. Unit: Ampere", sensorLabels, nil)
-	currentMinDesc = prometheus.NewDesc(prefix+"current_min_ampere", "Current min value. Unit: Ampere", sensorLabels, nil)
-	currentCriticalMinValue = prometheus.NewDesc(prefix+"current_critical_min_ampere", "Current critical low value. Unit: Ampere", sensorLabels, nil)
-	currentCriticalMaxValue = prometheus.NewDesc(prefix+"current_critical_max_ampere", "Current critical high value. Unit: Ampere", sensorLabels, nil)
-	currentDesc = prometheus.NewDesc(prefix+"current_ampere", "Current input value. Unit: Ampere", sensorLabels, nil)
+	currentMaxDesc           = prometheus.NewDesc(prefix+"current_max_ampere", "Current max value. Unit: Ampere", sensorLabels, nil)
+	currentMinDesc           = prometheus.NewDesc(prefix+"current_min_ampere", "Current min value. Unit: Ampere", sensorLabels, nil)
+	currentCriticalMinValue  = prometheus.NewDesc(prefix+"current_critical_min_ampere", "Current critical low value. Unit: Ampere", sensorLabels, nil)
+	currentCriticalMaxValue  = prometheus.NewDesc(prefix+"current_critical_max_ampere", "Current critical high value. Unit: Ampere", sensorLabels, nil)
+	currentDesc              = prometheus.NewDesc(prefix+"current_ampere", "Current input value. Unit: Ampere", sensorLabels, nil)
 	currentSensorEnabledDesc = prometheus.NewDesc(prefix+"current_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
+
+	powerPresent = prometheus.NewDesc(prefix+"power_present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
+	powerAllOk   = prometheus.NewDesc(prefix+"power_all_ok", "Is PSU Ok. 1 = OK, 0 = KO", sensorLabels, nil)
 
 	rawValueDesc = prometheus.NewDesc(prefix+"raw_sensor_reading", "Arbitrary sensor reading, see labels on how to interpret this value", []string{"path", "description"}, nil)
 }
@@ -152,13 +158,16 @@ func (*Collector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- currentCriticalMaxValue
 	ch <- currentDesc
 	ch <- currentSensorEnabledDesc
+
+	ch <- powerPresent
+	ch <- powerAllOk
 }
 
 type parserFunc func(string, string, string) prometheus.Metric
 
 func getParsers(sensorType string) []parserFunc {
 	return map[string][]parserFunc{
-		"voltage": []parserFunc{
+		"voltage": {
 			makeDefaultParser(voltageMinDesc, "_min", 1000),
 			makeDefaultParser(voltageCriticalMinDesc, "_lcrit", 1000),
 			makeDefaultParser(voltageMaxDesc, "_max", 1000),
@@ -166,7 +175,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(voltageLabelInfoDesc, "_label"),
 			makeDefaultParser(voltageSensorEnabledDesc, "_enable", 1),
 		},
-		"fan": []parserFunc{
+		"fan": {
 			makeDefaultParser(fanMinDesc, "_min", 1),
 			makeDefaultParser(fanMaxDesc, "_max", 1),
 			makeDefaultParser(fanDesc, "_input", 1),
@@ -176,7 +185,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(fanLabelsDesc, "_label"),
 			makeDefaultParser(fanSensorEnabledDesc, "_enable", 1),
 		},
-		"temp": []parserFunc{
+		"temp": {
 			makeTemperatureSensorTypeParser(temperatureTypeDesc, "_type"),
 			makeDefaultParser(temperatureMaxDesc, "_max", 1000),
 			makeDefaultParser(temperatureMinDesc, "_min", 1000),
@@ -193,7 +202,7 @@ func getParsers(sensorType string) []parserFunc {
 			makeChannelParser(temperatureLabelDesc, "_label"),
 			makeDefaultParser(temperatureSensorEnabledDesc, "_enable", 1),
 		},
-		"current": []parserFunc{
+		"current": {
 			makeDefaultParser(currentMaxDesc, "_max", 1000),
 			makeDefaultParser(currentMinDesc, "_min", 1000),
 			makeDefaultParser(currentCriticalMinValue, "_lcrit", 1000),
@@ -201,7 +210,11 @@ func getParsers(sensorType string) []parserFunc {
 			makeDefaultParser(currentDesc, "_input", 1000),
 			makeDefaultParser(currentSensorEnabledDesc, "_enable", 1),
 		},
-		"raw": []parserFunc{
+		"power": {
+			makeDefaultParser(powerPresent, "_present", 1),
+			makeDefaultParser(powerAllOk, "_all_ok", 1),
+		},
+		"raw": {
 			makeRawParser(rawValueDesc),
 		},
 	}[sensorType]
@@ -255,25 +268,23 @@ func makeRawParser(metricDesc *prometheus.Desc) parserFunc {
 	}
 }
 
-// Name returns the string "HwmonCollector"
 func (*Collector) Name() string {
 	return "HwmonCollector"
 }
 
-// Collect implements collector.Collector interface Collect function
 func (c *Collector) Collect(metrics chan<- prometheus.Metric, errorChan chan error, done chan struct{}) {
 	defer func() {
 		done <- struct{}{}
 	}()
 
 	wg := &sync.WaitGroup{}
-	wg.Add(len(c.config.Sensors))
 
 	for _, sensorConfiguration := range c.config.Sensors {
-		collectSensor(sensorConfiguration, metrics, wg)
+		wg.Add(1)
+		go collectSensor(sensorConfiguration, metrics, wg)
 	}
 
-	//wg.Wait()
+	wg.Wait()
 }
 
 func collectSensor(sensorConfig *SensorConfiguration, metrics chan<- prometheus.Metric, wg *sync.WaitGroup) {
