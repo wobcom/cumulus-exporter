@@ -109,8 +109,8 @@ func init() {
 	currentDesc              = prometheus.NewDesc(prefix+"current_ampere", "Current input value. Unit: Ampere", sensorLabels, nil)
 	currentSensorEnabledDesc = prometheus.NewDesc(prefix+"current_sensor_enabled_bool", "1 = sensor enabled, 0 = sensor disabled", sensorLabels, nil)
 
-	powerPresent = prometheus.NewDesc(prefix+"present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
-	powerAllOk   = prometheus.NewDesc(prefix+"all_ok", "Is PSU Ok. 1 = OK, 0 = KO", sensorLabels, nil)
+	powerPresent = prometheus.NewDesc(prefix+"power_present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
+	powerAllOk   = prometheus.NewDesc(prefix+"power_all_ok", "Is PSU Ok. 1 = OK, 0 = KO", sensorLabels, nil)
 
 	rawValueDesc = prometheus.NewDesc(prefix+"raw_sensor_reading", "Arbitrary sensor reading, see labels on how to interpret this value", []string{"path", "description"}, nil)
 }
