@@ -115,12 +115,7 @@ func initialize() {
 	}
 	if *hwmonCollector {
 		log.Info("hwmon collector enabled")
-		hwmonCollectorConfig, err := hwmon.LoadConfiguration(*hwmonCollectorConfig)
-		if err != nil {
-			log.Errorf("Could not load hwmon collector config file: %v. Disabling hwmon collector.", err)
-		} else {
-			enabledCollectors = append(enabledCollectors, hwmon.NewCollector(hwmonCollectorConfig))
-		}
+		enabledCollectors = append(enabledCollectors, hwmon.NewCollector())
 	}
 	if *mstpdCollector {
 		enabledCollectors = append(enabledCollectors, mstpd.NewCollector(*mstpctlPath))

@@ -8,7 +8,6 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/vishvananda/netlink v1.3.0
 	github.com/wobcom/transceiver-exporter v1.5.1
-	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
