@@ -39,8 +39,10 @@ var (
 	currentCriticalMaxValue  *prometheus.Desc
 	currentDesc              *prometheus.Desc
 
-	powerPresent *prometheus.Desc
-	powerAllOk   *prometheus.Desc
+	powerWatt      *prometheus.Desc
+	powerPresent   *prometheus.Desc
+	powerAllOk     *prometheus.Desc
+	powerAllOkPrev *prometheus.Desc
 
 	rawValueDesc *prometheus.Desc
 )
@@ -79,8 +81,10 @@ func init() {
 	currentCriticalMaxValue  = prometheus.NewDesc(prefix+"current_critical_max_ampere", "Current critical high value. Unit: Ampere", sensorLabels, nil)
 	currentDesc              = prometheus.NewDesc(prefix+"current_ampere", "Current input value. Unit: Ampere", sensorLabels, nil)
 
-	powerPresent = prometheus.NewDesc(prefix+"power_present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
-	powerAllOk   = prometheus.NewDesc(prefix+"power_all_ok", "Is PSU Ok. 1 = OK, 0 = KO", sensorLabels, nil)
+	powerWatt        = prometheus.NewDesc(prefix+"power_watt", "Current Usage. Unit: Watt ", sensorLabels, nil)
+	powerPresent     = prometheus.NewDesc(prefix+"power_present", "Is Power Present. 1 = present, 0 = missing", sensorLabels, nil)
+	powerAllOk       = prometheus.NewDesc(prefix+"power_all_ok", "Is PSU Ok. 1 = OK, 0 = BAD, -1 = POWERED OFF, -2 NOT DETECTED", sensorLabels, nil)
+	powerAllOkPrev   = prometheus.NewDesc(prefix+"power_all_ok_prev", "Is PSU Ok (Previous State). 1 = OK, 0 = BAD, -1 = POWERED OFF, -2 NOT DETECTED", sensorLabels, nil)
 
 	rawValueDesc = prometheus.NewDesc(prefix+"raw_sensor_reading", "Arbitrary sensor reading, see labels on how to interpret this value", []string{"description"}, nil)
 }
@@ -126,8 +130,10 @@ func (*Collector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- currentCriticalMaxValue
 	ch <- currentDesc
 
+	ch <- powerWatt
 	ch <- powerPresent
 	ch <- powerAllOk
+	ch <- powerAllOkPrev
 }
 
 func (*Collector) Name() string {
