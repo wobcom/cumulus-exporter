@@ -34,7 +34,6 @@ var (
 	excludeInterfacesRegex   = flag.String("collectors.transceiver.exclude-interfaces-regex", "", "Regex Expression for interfaces to exclude from scrape")
 	includeInterfacesRegex   = flag.String("collectors.transceiver.include-interfaces-regex", "", "Regex Expression for interfaces to include from scrape")
 	hwmonCollector           = flag.Bool("collectors.hwmon", false, "Enable hwmon collector")
-	hwmonCollectorConfig     = flag.String("collectors.hwmon.config", "hwmon.yml", "hwmon collector config file")
 	mstpdCollector           = flag.Bool("collectors.mstpd", false, "Enable mstpd collector")
 	mstpctlPath              = flag.String("collectors.mstpd.mstpctl-path", "/sbin/mstpctl", "mstpctl binary path")
 	logLevel                 = flag.String("log.level", "info", "The level the application logs at")
