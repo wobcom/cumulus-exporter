@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 - 2025-05-20
+* Deprecated hwmon.yml files
+* Added new auto-parsing of sensors through `smonctl` utility
+
 ## 1.0.12 - 2025-04-02
 * Added prepared hwmon.yml files for easier rollout
 
