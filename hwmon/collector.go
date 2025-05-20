@@ -48,6 +48,9 @@ var (
 )
 
 func init() {
+	// we're using these labels for legacy reasons, in order to not
+	// break existing dashboards. these names do not reflect the
+	// description of the value. FIXME copy into other labels & deprecate(?)
 	sensorLabels := []string{"hw_mon", "description"}
 
 	voltageMinDesc           = prometheus.NewDesc(prefix+"voltage_min_volts", "Voltage min value. Unit: Volts", sensorLabels, nil)
