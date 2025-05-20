@@ -7,70 +7,37 @@ It provides the following metrics:
 * Transceiver statistics (RX / TX power, voltage, temperature, ...) by including the [transceiver-exporter](https://github.com/wobcom/transceiver-exporter)
 * MSTPD statistics (port (forwarding) states)
 * ASIC statistics as exposed in `/cumulus/switchd`
-* HWMON statistics (*needs configuration*)
+* HWMON statistics (through `smonctl` utility)
 
 ## Usage
 ```
-Usage of cumulus-exporter:
+Usage of ./cumulus-exporter:
   -collectors.asic
-        Enable ASIC collector
+    	Enable ASIC collector
   -collectors.hwmon
-        Enable hwmon collector
-  -collectors.hwmon.config string
-        hwmon collector config file (default "hwmon.yml")
+    	Enable hwmon collector
   -collectors.mstpd
-        Enable mstpd collector
+    	Enable mstpd collector
   -collectors.mstpd.mstpctl-path string
-        mstpctl binary path (default "/sbin/mstpctl")
+    	mstpctl binary path (default "/sbin/mstpctl")
   -collectors.transceiver
-        Enable transceiver collector (rx / tx power, temperatures, etc.)
+    	Enable transceiver collector (rx / tx power, temperatures, etc.)
   -collectors.transceiver.exclude-interfaces string
-        Comma seperated list of interfaces to exclude from scrape
+    	Comma seperated list of interfaces to exclude from scrape
   -collectors.transceiver.exclude-interfaces-regex string
-        Regex Expression for interfaces to exclude from scrape
+    	Regex Expression for interfaces to exclude from scrape
   -collectors.transceiver.include-interfaces string
-        Comma seperated list of interfaces to include from scrape
+    	Comma seperated list of interfaces to include from scrape
   -collectors.transceiver.include-interfaces-regex string
-        Regex Expression for interfaces to include from scrape
+    	Regex Expression for interfaces to include from scrape
   -collectors.transceiver.interface-features
-        Collect interface features (results in many time series)
+    	Collect interface features (results in many time series)
   -log.level string
-        The level the application logs at (default "info")
+    	The level the application logs at (default "info")
   -version
-        Print version and exit
+    	Print version and exit
   -web.listen-address string
-        Address to listen on (default "[::]:9457")
+    	Address to listen on (default "[::]:9457")
   -web.telemetry-path string
-        Path under which to expose metrics (default "/metrics")
-```
-
-## Hwmon configuration
-The kernel's hwmon interface provides no means of enumerating sensors, so you have to provide some information.
-
-We have included hwmon configurations for some common models supported by Cumulus Linux in hwmon-configurations.
-
-In case your device is not listed in here, you can figure out some sensors by running `smonctl -v --json`.
-
-Supply the following format to the cumulus-exporter:
-```yaml
-sensors:
-  - description: "Asic Temp Sensor"
-    driver_path: "/sys/class/hwmon/hwmon8"
-    driver_hwmon: temp1
-    type: temp
-  - description: "Main Board Ambient Sensor"
-    driver_path: "/sys/class/hwmon/hwmon5"
-    driver_hwmon: temp1
-    type: temp
-  - description: "Port Ambient Sensor"
-    driver_path: "/sys/class/hwmon/hwmon4"
-    driver_hwmon: temp1
-    type: temp
-```
-
-If you wish to export the (floating point) content from a single file, use
-```yaml
-  - description: "Fan Tray 2 OK"
-    driver_path: "/sys/bus/i2c/devices/0-0060/fan2_ok"
-    type: raw
+    	Path under which to expose metrics (default "/metrics")
 ```
