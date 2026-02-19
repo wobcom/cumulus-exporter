@@ -109,7 +109,7 @@ func initialize() {
     } else if len(includedIfaceNames) > 0 && len(blacklistedIfaceNames) > 0 {
       log.Errorf("Can't include and exclude interfaces at the same time. Disabling transceiver collector.")
 		} else {
-			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, includeIfaceRegex, excludeIfaceRegex, true, *collectInterfaceFeatures, false))
+			enabledCollectors = append(enabledCollectors, transceivercollector.NewCollector(blacklistedIfaceNames, includedIfaceNames, excludeIfaceRegex, includeIfaceRegex, true, *collectInterfaceFeatures, false))
 		}
 	}
 	if *hwmonCollector {
